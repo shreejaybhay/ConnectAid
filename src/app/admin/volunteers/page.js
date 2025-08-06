@@ -20,6 +20,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import { useToast } from "@/hooks/use-toast";
+import ErrorBoundary from "@/components/ErrorBoundary";
 
 // Animation variants
 const fadeInUp = {
@@ -43,29 +44,43 @@ const AdminVolunteersPage = () => {
   const [processingId, setProcessingId] = useState(null);
   const { toast } = useToast();
 
-  useEffect(() => {
-    fetchVolunteers();
-  }, [fetchVolunteers]);
+  // Debug logging
+  console.log('AdminVolunteersPage render:', {
+    status,
+    sessionExists: !!session,
+    userRole: session?.user?.role,
+    volunteersCount: volunteers?.length || 0,
+    isLoading
+  });
 
   const fetchVolunteers = useCallback(async () => {
     try {
-      const response = await fetch('/api/admin/volunteers');
+      setIsLoading(true);
+      const response = await fetch('/api/admin/volunteers', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
       const result = await response.json();
-      
-      if (response.ok) {
-        setVolunteers(result.volunteers);
+
+      if (result.volunteers) {
+        setVolunteers(Array.isArray(result.volunteers) ? result.volunteers : []);
       } else {
-        toast({
-          title: "Error",
-          description: result.error || "Failed to fetch volunteers",
-          variant: "destructive",
-        });
+        console.warn('No volunteers data in response:', result);
+        setVolunteers([]);
       }
     } catch (error) {
       console.error('Fetch volunteers error:', error);
+      setVolunteers([]);
       toast({
         title: "Error",
-        description: "Failed to load volunteers",
+        description: error.message || "Failed to load volunteers",
         variant: "destructive",
       });
     } finally {
@@ -73,9 +88,22 @@ const AdminVolunteersPage = () => {
     }
   }, [toast]);
 
+  useEffect(() => {
+    fetchVolunteers();
+  }, []); // Remove fetchVolunteers from dependencies to prevent infinite loop
+
   const handleVolunteerAction = async (volunteerId, action) => {
+    if (!volunteerId || !action) {
+      toast({
+        title: "Error",
+        description: "Invalid volunteer ID or action",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setProcessingId(volunteerId);
-    
+
     try {
       const response = await fetch('/api/admin/volunteers', {
         method: 'POST',
@@ -88,29 +116,26 @@ const AdminVolunteersPage = () => {
         }),
       });
 
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
       const result = await response.json();
 
-      if (response.ok) {
-        toast({
-          title: action === 'approve' ? "Volunteer Approved" : "Application Rejected",
-          description: result.message,
-          variant: "success",
-        });
-        
-        // Remove the volunteer from the list
-        setVolunteers(prev => prev.filter(v => v._id !== volunteerId));
-      } else {
-        toast({
-          title: "Action Failed",
-          description: result.error || `Failed to ${action} volunteer`,
-          variant: "destructive",
-        });
-      }
+      toast({
+        title: action === 'approve' ? "Volunteer Approved" : "Application Rejected",
+        description: result.message || `Successfully ${action}d volunteer`,
+        variant: "success",
+      });
+
+      // Remove the volunteer from the list
+      setVolunteers(prev => Array.isArray(prev) ? prev.filter(v => v && v._id !== volunteerId) : []);
+
     } catch (error) {
       console.error('Volunteer action error:', error);
       toast({
-        title: "Error",
-        description: "An unexpected error occurred",
+        title: "Action Failed",
+        description: error.message || `Failed to ${action} volunteer`,
         variant: "destructive",
       });
     } finally {
@@ -122,6 +147,28 @@ const AdminVolunteersPage = () => {
     return (
       <div className="min-h-screen bg-gradient-to-br from-orange-50/40 via-white/90 to-orange-100/30 flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+
+  if (status === "unauthenticated") {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-orange-50/40 via-white/90 to-orange-100/30 flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-semibold text-foreground mb-2">Access Denied</h1>
+          <p className="text-muted-foreground">You need to be logged in to access this page.</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (session?.user?.role !== 'admin') {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-orange-50/40 via-white/90 to-orange-100/30 flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-semibold text-foreground mb-2">Access Denied</h1>
+          <p className="text-muted-foreground">You need admin privileges to access this page.</p>
+        </div>
       </div>
     );
   }
@@ -162,8 +209,11 @@ const AdminVolunteersPage = () => {
             </motion.div>
           ) : (
             <motion.div variants={fadeInUp} className="space-y-4">
-              {volunteers && volunteers.length > 0 && volunteers.map((volunteer, index) => {
-                if (!volunteer || !volunteer._id) return null;
+              {Array.isArray(volunteers) && volunteers.length > 0 && volunteers.map((volunteer, index) => {
+                if (!volunteer || !volunteer._id) {
+                  console.warn('Invalid volunteer data:', volunteer);
+                  return null;
+                }
 
                 return (
                   <div
@@ -304,4 +354,13 @@ const AdminVolunteersPage = () => {
   );
 };
 
-export default AdminVolunteersPage;
+// Wrap the component with ErrorBoundary
+const AdminVolunteersPageWithErrorBoundary = () => {
+  return (
+    <ErrorBoundary>
+      <AdminVolunteersPage />
+    </ErrorBoundary>
+  );
+};
+
+export default AdminVolunteersPageWithErrorBoundary;
