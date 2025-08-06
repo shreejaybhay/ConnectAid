@@ -323,30 +323,6 @@ const EditRequestPage = ({ params }) => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white border-b">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            {/* Logo */}
-            <div className="flex items-center space-x-3">
-              <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
-                <Users className="h-5 w-5 text-primary-foreground" />
-              </div>
-              <span className="text-lg font-semibold text-gray-900">
-                ConnectAid
-              </span>
-            </div>
-
-            {/* Back to Request */}
-            <Link href={`/dashboard/requests/${requestId}`}>
-              <Button variant="outline" size="sm" className="flex items-center gap-2">
-                <ArrowLeft className="h-4 w-4" />
-                Back to Request
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </header>
 
       {/* Main Content */}
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
