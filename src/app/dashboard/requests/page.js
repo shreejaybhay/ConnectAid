@@ -23,6 +23,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
+import ErrorBoundary from "@/components/ErrorBoundary";
 
 const RequestsPage = () => {
   const { data: session, status } = useSession();
@@ -32,35 +33,37 @@ const RequestsPage = () => {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
 
-  useEffect(() => {
-    if (status === "authenticated") {
-      fetchRequests();
-    }
-  }, [status, filter, fetchRequests]);
+  // Debug logging
+  console.log('RequestsPage render:', {
+    status,
+    sessionExists: !!session,
+    userRole: session?.user?.role,
+    requestsCount: requests?.length || 0,
+    loading,
+    filter
+  });
 
   const fetchRequests = useCallback(async () => {
     try {
       setLoading(true);
       const params = new URLSearchParams();
       if (filter !== 'all') params.append('status', filter);
-      
-      const response = await fetch(`/api/requests?${params}`);
-      const data = await response.json();
 
-      if (response.ok) {
-        setRequests(data.requests || []);
-      } else {
-        toast({
-          title: "Error",
-          description: data.error || "Failed to fetch requests",
-          variant: "destructive",
-        });
+      const response = await fetch(`/api/requests?${params}`);
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
+
+      const data = await response.json();
+      setRequests(Array.isArray(data.requests) ? data.requests : []);
+
     } catch (error) {
       console.error('Fetch requests error:', error);
+      setRequests([]);
       toast({
         title: "Error",
-        description: "An unexpected error occurred",
+        description: error.message || "Failed to load requests",
         variant: "destructive",
       });
     } finally {
@@ -68,35 +71,52 @@ const RequestsPage = () => {
     }
   }, [filter, toast]);
 
+  useEffect(() => {
+    if (status === "authenticated") {
+      fetchRequests();
+    }
+  }, [status, filter]); // Remove fetchRequests from dependencies to prevent infinite loop
+
   const handleDeleteRequest = async (requestId) => {
+    if (!requestId) {
+      toast({
+        title: "Error",
+        description: "Invalid request ID",
+        variant: "destructive",
+      });
+      return;
+    }
+
     if (!confirm('Are you sure you want to delete this request?')) return;
 
     try {
       const response = await fetch(`/api/requests/${requestId}`, {
         method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
       });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
 
       const data = await response.json();
 
-      if (response.ok) {
-        toast({
-          title: "Success",
-          description: "Request deleted successfully",
-          variant: "success",
-        });
-        fetchRequests(); // Refresh the list
-      } else {
-        toast({
-          title: "Error",
-          description: data.error || "Failed to delete request",
-          variant: "destructive",
-        });
-      }
+      toast({
+        title: "Success",
+        description: data.message || "Request deleted successfully",
+        variant: "success",
+      });
+
+      // Refresh the list
+      fetchRequests();
+
     } catch (error) {
       console.error('Delete request error:', error);
       toast({
         title: "Error",
-        description: "An unexpected error occurred",
+        description: error.message || "Failed to delete request",
         variant: "destructive",
       });
     }
@@ -152,7 +172,7 @@ const RequestsPage = () => {
     }
   }, [status, session, router]);
 
-  if (status === "loading") {
+  if (status === "loading" || loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
@@ -160,10 +180,24 @@ const RequestsPage = () => {
     );
   }
 
+  if (status === "unauthenticated") {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-semibold text-gray-900 mb-2">Access Denied</h1>
+          <p className="text-gray-600">You need to be logged in to access this page.</p>
+        </div>
+      </div>
+    );
+  }
+
   if (!session || session.user.role !== 'citizen') {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+        <div className="text-center">
+          <h1 className="text-2xl font-semibold text-gray-900 mb-2">Access Denied</h1>
+          <p className="text-gray-600">This page is only available for citizens.</p>
+        </div>
       </div>
     );
   }
@@ -240,7 +274,13 @@ const RequestsPage = () => {
                 </div>
               ) : (
                 <div className="space-y-4">
-                  {requests.map((request) => (
+                  {Array.isArray(requests) && requests.length > 0 && requests.map((request) => {
+                    if (!request || !request._id) {
+                      console.warn('Invalid request data:', request);
+                      return null;
+                    }
+
+                    return (
                     <div key={request._id} className="border rounded-lg p-4 hover:shadow-sm transition-shadow">
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
@@ -305,7 +345,8 @@ const RequestsPage = () => {
                         </div>
                       </div>
                     </div>
-                  ))}
+                    );
+                  })}
                 </div>
               )}
             </div>
@@ -316,4 +357,13 @@ const RequestsPage = () => {
   );
 };
 
-export default RequestsPage;
+// Wrap the component with ErrorBoundary
+const RequestsPageWithErrorBoundary = () => {
+  return (
+    <ErrorBoundary>
+      <RequestsPage />
+    </ErrorBoundary>
+  );
+};
+
+export default RequestsPageWithErrorBoundary;
