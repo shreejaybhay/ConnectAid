@@ -203,83 +203,99 @@ const VolunteerAssignmentsPage = () => {
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="min-h-screen bg-gray-50">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
         {/* Page Header */}
-        <div className="mb-8">
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">My Assignments</h1>
-          <p className="text-gray-600">
+        <div className="bg-white rounded-lg border p-4 sm:p-6 mb-4 sm:mb-6">
+          <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-1 sm:mb-2">
+            My Assignments
+          </h1>
+          <p className="text-sm sm:text-base text-gray-600">
             Manage and track your accepted volunteer assignments
           </p>
         </div>
 
         {/* Search and Filters */}
-        <Card className="mb-6">
-          <CardContent className="p-6">
-            <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
-              <div className="relative flex-1 max-w-md">
+        <Card className="mb-4 sm:mb-6">
+          <CardContent className="p-4 sm:p-6">
+            <div className="flex flex-col gap-4">
+              <div className="relative flex-1">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
                 <Input
                   placeholder="Search assignments..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10"
+                  className="pl-10 h-10 sm:h-11"
                 />
               </div>
-              
+
               <div className="flex gap-2">
-                <select
-                  value={filterStatus}
-                  onChange={(e) => setFilterStatus(e.target.value)}
-                  className="px-3 py-2 border border-gray-300 rounded-md text-sm"
-                >
-                  <option value="all">All Status</option>
-                  <option value="accepted">Accepted</option>
-                  <option value="in_progress">In Progress</option>
-                  <option value="completed">Completed</option>
-                </select>
+                <div className="relative flex-1 sm:flex-none">
+                  <select
+                    value={filterStatus}
+                    onChange={(e) => setFilterStatus(e.target.value)}
+                    className="w-full px-3 py-2 pr-10 border border-gray-300 rounded-md text-sm h-8 bg-white"
+                    style={{
+                      appearance: 'none',
+                      WebkitAppearance: 'none',
+                      MozAppearance: 'none',
+                      backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e")`,
+                      backgroundPosition: 'right 0.75rem center',
+                      backgroundRepeat: 'no-repeat',
+                      backgroundSize: '1.25em 1.25em'
+                    }}
+                  >
+                    <option value="all">All Status</option>
+                    <option value="accepted">Accepted</option>
+                    <option value="in_progress">In Progress</option>
+                    <option value="completed">Completed</option>
+                  </select>
+                </div>
               </div>
             </div>
           </CardContent>
         </Card>
 
         {/* Assignments List */}
-        <div className="space-y-4">
+        <div className="space-y-4 sm:space-y-6">
           {filteredAssignments.length === 0 ? (
             <Card>
-              <CardContent className="p-12 text-center">
-                <CheckCircle className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 mb-2">
-                  {searchTerm || filterStatus !== "all" ? "No matching assignments" : "No assignments yet"}
-                </h3>
-                <p className="text-gray-600 mb-4">
-                  {searchTerm || filterStatus !== "all" 
-                    ? "Try adjusting your search or filters" 
-                    : "Start helping your community by accepting requests"
-                  }
-                </p>
-                {!searchTerm && filterStatus === "all" && (
-                  <Link href="/dashboard/volunteer/requests">
-                    <Button>Browse Available Requests</Button>
-                  </Link>
-                )}
+              <CardContent className="p-6 sm:p-12 text-center">
+                <div className="flex flex-col items-center justify-center py-4 sm:py-8">
+                  <CheckCircle className="h-10 w-10 sm:h-12 sm:w-12 text-gray-400 mx-auto mb-3 sm:mb-4" />
+                  <h3 className="text-base sm:text-lg font-medium text-gray-900 mb-2">
+                    {searchTerm || filterStatus !== "all" ? "No matching assignments" : "No assignments yet"}
+                  </h3>
+                  <p className="text-sm sm:text-base text-gray-600 mb-4 max-w-md">
+                    {searchTerm || filterStatus !== "all"
+                      ? "Try adjusting your search or filters"
+                      : "Start helping your community by accepting requests"
+                    }
+                  </p>
+                  {!searchTerm && filterStatus === "all" && (
+                    <Link href="/dashboard/volunteer/requests">
+                      <Button className="touch-target">Browse Available Requests</Button>
+                    </Link>
+                  )}
+                </div>
               </CardContent>
             </Card>
           ) : (
             filteredAssignments.map((assignment) => (
-              <Card key={assignment._id} className="hover:shadow-sm transition-shadow">
-                <CardContent className="p-6">
+              <Card key={assignment._id} className="hover:shadow-sm transition-shadow duration-200">
+                <CardContent className="p-4 sm:p-6">
                   {/* Header with Icon, Title and Status */}
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="flex items-center gap-3 flex-1 min-w-0">
-                      <span className="text-2xl flex-shrink-0">{getTypeIcon(assignment.type)}</span>
+                  <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-4 sm:mb-6">
+                    <div className="flex items-start gap-3 flex-1 min-w-0">
+                      <span className="text-xl sm:text-2xl flex-shrink-0">{getTypeIcon(assignment.type)}</span>
                       <div className="flex-1 min-w-0">
-                        <h3 className="text-lg font-semibold text-gray-900 mb-1 truncate">
+                        <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-2 break-words">
                           {assignment.title}
                         </h3>
-                        <div className="flex items-center gap-4 text-sm text-gray-500">
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-sm text-gray-500">
                           <span className="flex items-center gap-1">
                             <MapPin className="h-4 w-4 flex-shrink-0" />
-                            <span className="truncate">{assignment.location}</span>
+                            <span className="break-words">{assignment.location}</span>
                           </span>
                           <span className="flex items-center gap-1 flex-shrink-0">
                             <Calendar className="h-4 w-4" />
@@ -288,9 +304,9 @@ const VolunteerAssignmentsPage = () => {
                         </div>
                       </div>
                     </div>
-                    
-                    <div className="flex items-center gap-2 flex-shrink-0 ml-4">
-                      <Badge className={`px-2 py-1 text-xs font-medium ${getStatusColor(assignment.status)}`}>
+
+                    <div className="flex items-center gap-2 flex-shrink-0">
+                      <Badge className={`px-2 py-1 text-xs font-medium ${getStatusColor(assignment.status)} flex-shrink-0`}>
                         {getStatusIcon(assignment.status)}
                         <span className="ml-1 capitalize">{assignment.status.replace('_', ' ')}</span>
                       </Badge>
@@ -298,8 +314,8 @@ const VolunteerAssignmentsPage = () => {
                   </div>
                   
                   {/* Description */}
-                  <div className="mb-4">
-                    <p className="text-gray-700 leading-relaxed" style={{
+                  <div className="mb-4 sm:mb-6">
+                    <p className="text-sm sm:text-base text-gray-700 leading-relaxed" style={{
                       display: '-webkit-box',
                       WebkitLineClamp: 2,
                       WebkitBoxOrient: 'vertical',
@@ -308,62 +324,68 @@ const VolunteerAssignmentsPage = () => {
                       {assignment.description}
                     </p>
                   </div>
-                  
+
                   {/* Footer with Priority, Contact and Actions */}
-                  <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-                    <div className="flex items-center gap-3">
-                      <Badge className={`px-2 py-1 text-xs font-medium ${getPriorityColor(assignment.priority)}`}>
+                  <div className="flex flex-col gap-4 pt-4 border-t border-gray-100">
+                    {/* Priority and Type */}
+                    <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                      <Badge className={`px-2 py-1 text-xs font-medium ${getPriorityColor(assignment.priority)} flex-shrink-0`}>
                         <Flag className="h-3 w-3 mr-1" />
                         {assignment.priority}
                       </Badge>
-                      <span className="text-xs text-gray-500 capitalize">
+                      <span className="text-xs sm:text-sm text-gray-500 capitalize flex-shrink-0">
                         {assignment.type} request
                       </span>
                     </div>
-                    
-                    <div className="flex items-center gap-4">
-                      {/* Contact Info */}
-                      <div className="flex items-center gap-3 text-sm text-gray-500">
-                        <span className="flex items-center gap-1">
-                          <User className="h-4 w-4" />
+
+                    {/* Contact Info */}
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-sm text-gray-500">
+                      <span className="flex items-center gap-1">
+                        <User className="h-4 w-4 flex-shrink-0" />
+                        <span className="truncate">
                           {assignment.createdBy.firstName} {assignment.createdBy.lastName}
                         </span>
-                        {assignment.contactInfo?.phone && (
-                          <span className="flex items-center gap-1">
-                            <Phone className="h-4 w-4" />
-                            {assignment.contactInfo.phone}
-                          </span>
-                        )}
-                      </div>
-                      
-                      {/* Action Buttons */}
-                      <div className="flex items-center gap-2">
-                        <Link href={`/dashboard/requests/${assignment._id}`}>
-                          <Button variant="outline" size="sm">
-                            View Details
-                          </Button>
-                        </Link>
-                        
-                        {assignment.status === 'accepted' && (
-                          <Button 
-                            size="sm"
-                            onClick={() => handleStatusUpdate(assignment._id, 'in_progress')}
-                            className="bg-purple-600 hover:bg-purple-700 text-white"
-                          >
-                            Start Work
-                          </Button>
-                        )}
-                        
-                        {assignment.status === 'in_progress' && (
-                          <Button 
-                            size="sm"
-                            onClick={() => handleStatusUpdate(assignment._id, 'completed')}
-                            className="bg-green-600 hover:bg-green-700 text-white"
-                          >
-                            Mark Complete
-                          </Button>
-                        )}
-                      </div>
+                      </span>
+                      {assignment.contactInfo?.phone && (
+                        <span className="flex items-center gap-1">
+                          <Phone className="h-4 w-4 flex-shrink-0" />
+                          <span className="break-all">{assignment.contactInfo.phone}</span>
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Action Buttons */}
+                    <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+                      <Link href={`/dashboard/requests/${assignment._id}`}>
+                        <Button variant="outline" size="sm" className="w-full sm:w-auto touch-target">
+                          <span className="hidden xs:inline">View Details</span>
+                          <span className="xs:hidden">Details</span>
+                        </Button>
+                      </Link>
+
+                      {assignment.status === 'accepted' && (
+                        <Button
+                          size="sm"
+                          onClick={() => handleStatusUpdate(assignment._id, 'in_progress')}
+                          className="bg-purple-600 hover:bg-purple-700 text-white w-full sm:w-auto touch-target"
+                        >
+                          <PlayCircle className="h-4 w-4 mr-1 sm:mr-2" />
+                          <span className="hidden xs:inline">Start Work</span>
+                          <span className="xs:hidden">Start</span>
+                        </Button>
+                      )}
+
+                      {assignment.status === 'in_progress' && (
+                        <Button
+                          size="sm"
+                          onClick={() => handleStatusUpdate(assignment._id, 'completed')}
+                          className="bg-green-600 hover:bg-green-700 text-white w-full sm:w-auto touch-target"
+                        >
+                          <CheckCircle2 className="h-4 w-4 mr-1 sm:mr-2" />
+                          <span className="hidden xs:inline">Mark Complete</span>
+                          <span className="xs:hidden">Complete</span>
+                        </Button>
+                      )}
                     </div>
                   </div>
                 </CardContent>
@@ -371,6 +393,7 @@ const VolunteerAssignmentsPage = () => {
             ))
           )}
         </div>
+      </div>
     </div>
   );
 };

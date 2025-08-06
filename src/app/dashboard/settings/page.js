@@ -198,20 +198,25 @@ const SettingsPage = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="space-y-6">
+    <div className="min-h-screen bg-gray-50">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
+        <div className="space-y-4 sm:space-y-6">
           {/* Page Header */}
-          <div className="bg-white rounded-lg border p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <h1 className="text-2xl font-semibold text-gray-900 mb-1">Account Settings</h1>
-                <p className="text-gray-600">
+          <div className="bg-white rounded-lg border p-4 sm:p-6">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
+              <div className="flex-1 min-w-0">
+                <h1 className="text-xl sm:text-2xl lg:text-3xl font-semibold text-gray-900 mb-1 sm:mb-2">
+                  Account Settings
+                </h1>
+                <p className="text-sm sm:text-base text-gray-600">
                   Manage your profile information and account preferences
                 </p>
               </div>
-              <Badge variant="outline" className="text-xs">
-                {user?.role === 'volunteer' ? 'Volunteer' : 'Community Member'}
-              </Badge>
+              <div className="flex-shrink-0">
+                <Badge variant="outline" className="text-xs whitespace-nowrap">
+                  {user?.role === 'volunteer' ? 'Volunteer' : 'Community Member'}
+                </Badge>
+              </div>
             </div>
           </div>
 
@@ -219,46 +224,49 @@ const SettingsPage = () => {
           <div className="bg-white rounded-lg border">
             {/* Tab Navigation */}
             <div className="border-b">
-              <nav className="flex space-x-6 px-6 pt-4">
+              <nav className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-6 px-4 sm:px-6 pt-4">
                 <button
                   onClick={() => setActiveTab("profile")}
-                  className={`pb-3 px-1 border-b-2 font-medium text-sm ${
+                  className={`pb-3 px-1 border-b-2 font-medium text-sm text-left sm:text-center ${
                     activeTab === "profile"
                       ? "border-primary text-primary"
                       : "border-transparent text-gray-600 hover:text-gray-900"
                   }`}
                 >
-                  Profile Information
+                  <span className="hidden sm:inline">Profile Information</span>
+                  <span className="sm:hidden">Profile</span>
                 </button>
                 <button
                   onClick={() => setActiveTab("password")}
-                  className={`pb-3 px-1 border-b-2 font-medium text-sm ${
+                  className={`pb-3 px-1 border-b-2 font-medium text-sm text-left sm:text-center ${
                     activeTab === "password"
                       ? "border-primary text-primary"
                       : "border-transparent text-gray-600 hover:text-gray-900"
                   }`}
                 >
-                  Change Password
+                  <span className="hidden sm:inline">Change Password</span>
+                  <span className="sm:hidden">Password</span>
                 </button>
                 <button
                   onClick={() => setActiveTab("danger")}
-                  className={`pb-3 px-1 border-b-2 font-medium text-sm ${
+                  className={`pb-3 px-1 border-b-2 font-medium text-sm text-left sm:text-center ${
                     activeTab === "danger"
                       ? "border-red-500 text-red-600"
                       : "border-transparent text-gray-600 hover:text-gray-900"
                   }`}
                 >
-                  Danger Zone
+                  <span className="hidden sm:inline">Danger Zone</span>
+                  <span className="sm:hidden">Danger</span>
                 </button>
               </nav>
             </div>
 
             {/* Tab Content */}
-            <div className="p-6">
+            <div className="p-4 sm:p-6">
               {activeTab === "profile" && (
-                <form onSubmit={profileForm.handleSubmit(onProfileSubmit)} className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-1">
+                <form onSubmit={profileForm.handleSubmit(onProfileSubmit)} className="space-y-4 sm:space-y-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                    <div className="space-y-2">
                       <label htmlFor="firstName" className="text-sm font-medium text-gray-700">
                         First Name
                       </label>
@@ -266,7 +274,7 @@ const SettingsPage = () => {
                         id="firstName"
                         type="text"
                         {...profileForm.register("firstName")}
-                        className={`w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-primary focus:border-primary ${
+                        className={`w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-primary focus:border-primary h-10 sm:h-11 ${
                           profileForm.formState.errors.firstName ? 'border-red-500' : 'border-gray-300'
                         }`}
                         placeholder="Enter your first name"
@@ -276,7 +284,7 @@ const SettingsPage = () => {
                       )}
                     </div>
 
-                    <div className="space-y-1">
+                    <div className="space-y-2">
                       <label htmlFor="lastName" className="text-sm font-medium text-gray-700">
                         Last Name
                       </label>
@@ -284,7 +292,7 @@ const SettingsPage = () => {
                         id="lastName"
                         type="text"
                         {...profileForm.register("lastName")}
-                        className={`w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-primary focus:border-primary ${
+                        className={`w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-primary focus:border-primary h-10 sm:h-11 ${
                           profileForm.formState.errors.lastName ? 'border-red-500' : 'border-gray-300'
                         }`}
                         placeholder="Enter your last name"
@@ -295,7 +303,7 @@ const SettingsPage = () => {
                     </div>
                   </div>
 
-                  <div className="space-y-1">
+                  <div className="space-y-2">
                     <label htmlFor="email" className="text-sm font-medium text-gray-700">
                       Email Address
                     </label>
@@ -304,13 +312,13 @@ const SettingsPage = () => {
                       type="email"
                       value={user?.email}
                       disabled
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-500 cursor-not-allowed"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-500 cursor-not-allowed h-10 sm:h-11"
                     />
                     <p className="text-xs text-gray-500">Email cannot be changed</p>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-1">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                    <div className="space-y-2">
                       <label htmlFor="phone" className="text-sm font-medium text-gray-700">
                         Phone Number (Optional)
                       </label>
@@ -318,7 +326,7 @@ const SettingsPage = () => {
                         id="phone"
                         type="tel"
                         {...profileForm.register("phone")}
-                        className={`w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-primary focus:border-primary ${
+                        className={`w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-primary focus:border-primary h-10 sm:h-11 ${
                           profileForm.formState.errors.phone ? 'border-red-500' : 'border-gray-300'
                         }`}
                         placeholder="(555) 123-4567"
@@ -328,7 +336,7 @@ const SettingsPage = () => {
                       )}
                     </div>
 
-                    <div className="space-y-1">
+                    <div className="space-y-2">
                       <label htmlFor="location" className="text-sm font-medium text-gray-700">
                         Location (Optional)
                       </label>
@@ -336,7 +344,7 @@ const SettingsPage = () => {
                         id="location"
                         type="text"
                         {...profileForm.register("location")}
-                        className={`w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-primary focus:border-primary ${
+                        className={`w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-primary focus:border-primary h-10 sm:h-11 ${
                           profileForm.formState.errors.location ? 'border-red-500' : 'border-gray-300'
                         }`}
                         placeholder="City, State"
@@ -347,11 +355,12 @@ const SettingsPage = () => {
                     </div>
                   </div>
 
-                  <div className="pt-4">
+                  <div className="pt-4 sm:pt-6">
                     <Button
                       type="submit"
+                      size="sm"
                       disabled={isLoading}
-                      className="bg-primary hover:bg-primary/90 text-primary-foreground disabled:opacity-50"
+                      className="bg-primary hover:bg-primary/90 text-primary-foreground disabled:opacity-50 w-full sm:w-auto"
                     >
                       {isLoading ? (
                         <>
@@ -370,8 +379,8 @@ const SettingsPage = () => {
               )}
 
               {activeTab === "password" && (
-                <form onSubmit={passwordForm.handleSubmit(onPasswordSubmit)} className="space-y-4">
-                  <div className="space-y-1">
+                <form onSubmit={passwordForm.handleSubmit(onPasswordSubmit)} className="space-y-4 sm:space-y-6">
+                  <div className="space-y-2">
                     <label htmlFor="currentPassword" className="text-sm font-medium text-gray-700">
                       Current Password
                     </label>
@@ -380,7 +389,7 @@ const SettingsPage = () => {
                         id="currentPassword"
                         type={showCurrentPassword ? "text" : "password"}
                         {...passwordForm.register("currentPassword")}
-                        className={`w-full px-3 py-2 pr-10 border rounded-md focus:ring-2 focus:ring-primary focus:border-primary ${
+                        className={`w-full px-3 py-2 pr-10 border rounded-md focus:ring-2 focus:ring-primary focus:border-primary h-10 sm:h-11 ${
                           passwordForm.formState.errors.currentPassword ? 'border-red-500' : 'border-gray-300'
                         }`}
                         placeholder="Enter your current password"
@@ -398,7 +407,7 @@ const SettingsPage = () => {
                     )}
                   </div>
 
-                  <div className="space-y-1">
+                  <div className="space-y-2">
                     <label htmlFor="newPassword" className="text-sm font-medium text-gray-700">
                       New Password
                     </label>
@@ -407,7 +416,7 @@ const SettingsPage = () => {
                         id="newPassword"
                         type={showNewPassword ? "text" : "password"}
                         {...passwordForm.register("newPassword")}
-                        className={`w-full px-3 py-2 pr-10 border rounded-md focus:ring-2 focus:ring-primary focus:border-primary ${
+                        className={`w-full px-3 py-2 pr-10 border rounded-md focus:ring-2 focus:ring-primary focus:border-primary h-10 sm:h-11 ${
                           passwordForm.formState.errors.newPassword ? 'border-red-500' : 'border-gray-300'
                         }`}
                         placeholder="Enter your new password"
@@ -425,7 +434,7 @@ const SettingsPage = () => {
                     )}
                   </div>
 
-                  <div className="space-y-1">
+                  <div className="space-y-2">
                     <label htmlFor="confirmPassword" className="text-sm font-medium text-gray-700">
                       Confirm New Password
                     </label>
@@ -434,7 +443,7 @@ const SettingsPage = () => {
                         id="confirmPassword"
                         type={showConfirmPassword ? "text" : "password"}
                         {...passwordForm.register("confirmPassword")}
-                        className={`w-full px-3 py-2 pr-10 border rounded-md focus:ring-2 focus:ring-primary focus:border-primary ${
+                        className={`w-full px-3 py-2 pr-10 border rounded-md focus:ring-2 focus:ring-primary focus:border-primary h-10 sm:h-11 ${
                           passwordForm.formState.errors.confirmPassword ? 'border-red-500' : 'border-gray-300'
                         }`}
                         placeholder="Confirm your new password"
@@ -452,11 +461,12 @@ const SettingsPage = () => {
                     )}
                   </div>
 
-                  <div className="pt-4">
+                  <div className="pt-4 sm:pt-6">
                     <Button
                       type="submit"
+                      size="sm"
                       disabled={isLoading}
-                      className="bg-primary hover:bg-primary/90 text-primary-foreground disabled:opacity-50"
+                      className="bg-primary hover:bg-primary/90 text-primary-foreground disabled:opacity-50 w-full sm:w-auto"
                     >
                       {isLoading ? (
                         <>
@@ -475,46 +485,50 @@ const SettingsPage = () => {
               )}
 
               {activeTab === "danger" && (
-                <div className="space-y-4">
-                  <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                    <div className="flex items-start space-x-3">
-                      <AlertTriangle className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />
-                      <div className="flex-1">
-                        <h3 className="font-medium text-red-800 mb-1">Delete Account</h3>
-                        <p className="text-red-700 text-sm mb-3">
+                <div className="space-y-4 sm:space-y-6">
+                  <div className="bg-red-50 border border-red-200 rounded-lg p-4 sm:p-6">
+                    <div className="flex items-start space-x-3 sm:space-x-4">
+                      <AlertTriangle className="h-5 w-5 sm:h-6 sm:w-6 text-red-600 flex-shrink-0 mt-0.5" />
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-medium text-red-800 mb-2 text-sm sm:text-base">Delete Account</h3>
+                        <p className="text-red-700 text-sm sm:text-base mb-4 leading-relaxed">
                           Once you delete your account, there is no going back. All your data will be permanently removed.
                         </p>
-                        
+
                         {!showDeleteConfirm ? (
                           <Button
                             variant="destructive"
                             onClick={() => setShowDeleteConfirm(true)}
                             size="sm"
-                            className="bg-red-600 hover:bg-red-700"
+                            className="bg-red-600 hover:bg-red-700 w-full sm:w-auto"
                           >
                             <Trash2 className="h-4 w-4 mr-2" />
                             Delete Account
                           </Button>
                         ) : (
-                          <div className="space-y-3">
-                            <p className="text-red-800 font-medium text-sm">
+                          <div className="space-y-3 sm:space-y-4">
+                            <p className="text-red-800 font-medium text-sm sm:text-base">
                               Are you absolutely sure? This action cannot be undone.
                             </p>
-                            <div className="flex space-x-2">
+                            <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
                               <Button
                                 variant="destructive"
                                 onClick={handleDeleteAccount}
                                 disabled={isLoading}
                                 size="sm"
-                                className="bg-red-600 hover:bg-red-700"
+                                className="bg-red-600 hover:bg-red-700 w-full sm:w-auto"
                               >
                                 {isLoading ? (
                                   <>
                                     <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-white mr-2"></div>
-                                    Deleting...
+                                    <span className="hidden xs:inline">Deleting...</span>
+                                    <span className="xs:hidden">...</span>
                                   </>
                                 ) : (
-                                  "Yes, Delete My Account"
+                                  <>
+                                    <span className="hidden xs:inline">Yes, Delete My Account</span>
+                                    <span className="xs:hidden">Delete</span>
+                                  </>
                                 )}
                               </Button>
                               <Button
@@ -522,6 +536,7 @@ const SettingsPage = () => {
                                 onClick={() => setShowDeleteConfirm(false)}
                                 disabled={isLoading}
                                 size="sm"
+                                className="w-full sm:w-auto"
                               >
                                 Cancel
                               </Button>
@@ -536,6 +551,7 @@ const SettingsPage = () => {
             </div>
           </div>
         </div>
+      </div>
     </div>
   );
 };

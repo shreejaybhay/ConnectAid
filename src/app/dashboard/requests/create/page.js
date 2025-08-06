@@ -220,119 +220,120 @@ const CreateRequestPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-
+    <div className="bg-gray-50 content-fit no-overscroll">
       {/* Main Content */}
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="space-y-6">
+      <main className="w-full max-w-5xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 lg:py-8 content-fit">
+        <div className="w-full space-y-4 sm:space-y-6 content-fit">
           {/* Page Header */}
-          <div>
-            <h1 className="text-2xl font-semibold text-gray-900">Create New Request</h1>
-            <p className="text-gray-600 mt-1">
+          <div className="text-center sm:text-left">
+            <h1 className="text-xl sm:text-2xl lg:text-3xl font-semibold text-gray-900 mb-2">
+              Create New Request
+            </h1>
+            <p className="text-sm sm:text-base text-gray-600">
               Ask your community for help with a service you need
             </p>
           </div>
 
           {/* Form */}
-          <div className="bg-white rounded-lg border p-6">
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <div className="w-full bg-white rounded-lg border p-4 sm:p-6 hover:shadow-sm transition-shadow duration-200">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 sm:space-y-8">
               {/* Request Type */}
-              <div className="space-y-3">
-                <Label className="text-base font-medium">Request Type *</Label>
+              <div className="space-y-3 sm:space-y-4">
+                <Label className="text-sm sm:text-base font-medium">Request Type *</Label>
                 <RadioGroup
                   value={form.watch('type')}
                   onValueChange={(value) => form.setValue('type', value)}
-                  className="grid grid-cols-1 md:grid-cols-3 gap-4"
+                  className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4"
                 >
-                  <div className="flex items-center space-x-2 border rounded-lg p-4 hover:bg-gray-50">
-                    <RadioGroupItem value="blood" id="blood" />
-                    <Label htmlFor="blood" className="flex items-center gap-2 cursor-pointer">
-                      <span className="text-xl">🩸</span>
-                      <div>
-                        <div className="font-medium">Blood Donation</div>
-                        <div className="text-sm text-gray-600">Need blood or donors</div>
+                  <div className="flex items-center space-x-3 border rounded-lg p-3 sm:p-4 hover:bg-gray-50 transition-colors duration-200">
+                    <RadioGroupItem value="blood" id="blood" className="flex-shrink-0" />
+                    <Label htmlFor="blood" className="flex items-center gap-2 sm:gap-3 cursor-pointer flex-1 min-w-0">
+                      <span className="text-lg sm:text-xl flex-shrink-0">🩸</span>
+                      <div className="flex-1 min-w-0">
+                        <div className="font-medium text-sm sm:text-base">Blood Donation</div>
+                        <div className="text-xs sm:text-sm text-gray-600">Need blood or donors</div>
                       </div>
                     </Label>
                   </div>
-                  <div className="flex items-center space-x-2 border rounded-lg p-4 hover:bg-gray-50">
-                    <RadioGroupItem value="garbage" id="garbage" />
-                    <Label htmlFor="garbage" className="flex items-center gap-2 cursor-pointer">
-                      <span className="text-xl">🗑️</span>
-                      <div>
-                        <div className="font-medium">Garbage Pickup</div>
-                        <div className="text-sm text-gray-600">Waste collection help</div>
+                  <div className="flex items-center space-x-3 border rounded-lg p-3 sm:p-4 hover:bg-gray-50 transition-colors duration-200">
+                    <RadioGroupItem value="garbage" id="garbage" className="flex-shrink-0" />
+                    <Label htmlFor="garbage" className="flex items-center gap-2 sm:gap-3 cursor-pointer flex-1 min-w-0">
+                      <span className="text-lg sm:text-xl flex-shrink-0">🗑️</span>
+                      <div className="flex-1 min-w-0">
+                        <div className="font-medium text-sm sm:text-base">Garbage Pickup</div>
+                        <div className="text-xs sm:text-sm text-gray-600">Waste collection help</div>
                       </div>
                     </Label>
                   </div>
-                  <div className="flex items-center space-x-2 border rounded-lg p-4 hover:bg-gray-50">
-                    <RadioGroupItem value="other" id="other" />
-                    <Label htmlFor="other" className="flex items-center gap-2 cursor-pointer">
-                      <span className="text-xl">🤝</span>
-                      <div>
-                        <div className="font-medium">Other Help</div>
-                        <div className="text-sm text-gray-600">General assistance</div>
+                  <div className="flex items-center space-x-3 border rounded-lg p-3 sm:p-4 hover:bg-gray-50 transition-colors duration-200 sm:col-span-2 lg:col-span-1">
+                    <RadioGroupItem value="other" id="other" className="flex-shrink-0" />
+                    <Label htmlFor="other" className="flex items-center gap-2 sm:gap-3 cursor-pointer flex-1 min-w-0">
+                      <span className="text-lg sm:text-xl flex-shrink-0">🤝</span>
+                      <div className="flex-1 min-w-0">
+                        <div className="font-medium text-sm sm:text-base">Other Help</div>
+                        <div className="text-xs sm:text-sm text-gray-600">General assistance</div>
                       </div>
                     </Label>
                   </div>
                 </RadioGroup>
                 {form.formState.errors.type && (
-                  <p className="text-red-500 text-sm">{form.formState.errors.type.message}</p>
+                  <p className="text-red-500 text-xs sm:text-sm">{form.formState.errors.type.message}</p>
                 )}
               </div>
 
               {/* Title */}
-              <div className="space-y-2">
-                <Label htmlFor="title" className="text-base font-medium">Title *</Label>
+              <div className="space-y-2 sm:space-y-3">
+                <Label htmlFor="title" className="text-sm sm:text-base font-medium">Title *</Label>
                 <Input
                   id="title"
                   placeholder="Brief description of what you need"
                   {...form.register('title')}
-                  className={`${form.formState.errors.title ? 'border-red-500' : ''}`}
+                  className={`h-10 sm:h-11 ${form.formState.errors.title ? 'border-red-500' : ''}`}
                 />
                 {form.formState.errors.title && (
-                  <p className="text-red-500 text-sm">{form.formState.errors.title.message}</p>
+                  <p className="text-red-500 text-xs sm:text-sm">{form.formState.errors.title.message}</p>
                 )}
               </div>
 
               {/* Description */}
-              <div className="space-y-2">
-                <Label htmlFor="description" className="text-base font-medium">Description *</Label>
+              <div className="space-y-2 sm:space-y-3">
+                <Label htmlFor="description" className="text-sm sm:text-base font-medium">Description *</Label>
                 <Textarea
                   id="description"
                   placeholder="Provide detailed information about your request..."
                   rows={4}
                   {...form.register('description')}
-                  className={`${form.formState.errors.description ? 'border-red-500' : ''}`}
+                  className={`resize-none ${form.formState.errors.description ? 'border-red-500' : ''}`}
                 />
                 {form.formState.errors.description && (
-                  <p className="text-red-500 text-sm">{form.formState.errors.description.message}</p>
+                  <p className="text-red-500 text-xs sm:text-sm">{form.formState.errors.description.message}</p>
                 )}
               </div>
 
               {/* Location */}
-              <div className="space-y-2">
-                <Label htmlFor="location" className="text-base font-medium">Location *</Label>
+              <div className="space-y-2 sm:space-y-3">
+                <Label htmlFor="location" className="text-sm sm:text-base font-medium">Location *</Label>
                 <div className="relative">
-                  <MapPin className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                  <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                   <Input
                     id="location"
                     placeholder="Where do you need help?"
-                    className={`pl-10 ${form.formState.errors.location ? 'border-red-500' : ''}`}
+                    className={`pl-10 h-10 sm:h-11 ${form.formState.errors.location ? 'border-red-500' : ''}`}
                     {...form.register('location')}
                   />
                 </div>
                 {form.formState.errors.location && (
-                  <p className="text-red-500 text-sm">{form.formState.errors.location.message}</p>
+                  <p className="text-red-500 text-xs sm:text-sm">{form.formState.errors.location.message}</p>
                 )}
               </div>
 
               {/* Priority */}
-              <div className="space-y-3">
-                <Label className="text-base font-medium">Priority Level</Label>
+              <div className="space-y-3 sm:space-y-4">
+                <Label className="text-sm sm:text-base font-medium">Priority Level</Label>
                 <RadioGroup
                   value={form.watch('priority')}
                   onValueChange={(value) => form.setValue('priority', value)}
-                  className="grid grid-cols-2 md:grid-cols-4 gap-4"
+                  className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4"
                 >
                   {[
                     { value: 'low', label: 'Low', color: 'text-green-600' },
@@ -340,9 +341,9 @@ const CreateRequestPage = () => {
                     { value: 'high', label: 'High', color: 'text-orange-600' },
                     { value: 'urgent', label: 'Urgent', color: 'text-red-600' }
                   ].map((priority) => (
-                    <div key={priority.value} className="flex items-center space-x-2">
-                      <RadioGroupItem value={priority.value} id={priority.value} />
-                      <Label htmlFor={priority.value} className={`cursor-pointer ${priority.color}`}>
+                    <div key={priority.value} className="flex items-center space-x-2 sm:space-x-3">
+                      <RadioGroupItem value={priority.value} id={priority.value} className="flex-shrink-0" />
+                      <Label htmlFor={priority.value} className={`cursor-pointer text-sm sm:text-base ${priority.color}`}>
                         {priority.label}
                       </Label>
                     </div>
@@ -351,12 +352,12 @@ const CreateRequestPage = () => {
               </div>
 
               {/* Images */}
-              <div className="space-y-3">
-                <Label className="text-base font-medium">Images (Optional)</Label>
-                <div className="border-2 border-dashed border-gray-300 rounded-lg p-6">
+              <div className="space-y-3 sm:space-y-4">
+                <Label className="text-sm sm:text-base font-medium">Images (Optional)</Label>
+                <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 sm:p-6 hover:border-gray-400 transition-colors duration-200">
                   <div className="text-center">
-                    <Upload className="h-8 w-8 text-gray-400 mx-auto mb-2" />
-                    <div className="text-sm text-gray-600 mb-2">
+                    <Upload className="h-6 w-6 sm:h-8 sm:w-8 text-gray-400 mx-auto mb-2 sm:mb-3" />
+                    <div className="text-xs sm:text-sm text-gray-600 mb-3 sm:mb-4">
                       Upload up to 5 images to help explain your request
                     </div>
                     <input
@@ -372,6 +373,7 @@ const CreateRequestPage = () => {
                       variant="outline"
                       size="sm"
                       onClick={() => document.getElementById('image-upload').click()}
+                      className="w-full sm:w-auto"
                     >
                       Choose Images
                     </Button>
@@ -380,20 +382,20 @@ const CreateRequestPage = () => {
 
                 {/* Image Previews */}
                 {images.length > 0 && (
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
                     {images.map((image, index) => (
-                      <div key={index} className="relative">
+                      <div key={index} className="relative group">
                         <img
                           src={image.preview}
                           alt={`Preview ${index + 1}`}
-                          className="w-full h-32 object-cover rounded-lg border"
+                          className="w-full h-24 sm:h-32 object-cover rounded-lg border hover:shadow-md transition-shadow duration-200"
                         />
                         <button
                           type="button"
                           onClick={() => removeImage(index)}
-                          className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600"
+                          className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 sm:p-1.5 hover:bg-red-600 transition-colors duration-200 opacity-90 group-hover:opacity-100"
                         >
-                          <X className="h-3 w-3" />
+                          <X className="h-3 w-3 sm:h-4 sm:w-4" />
                         </button>
                       </div>
                     ))}
@@ -402,82 +404,90 @@ const CreateRequestPage = () => {
               </div>
 
               {/* Contact Information */}
-              <div className="space-y-4 border-t pt-6">
-                <h3 className="text-lg font-medium">Contact Information</h3>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="phone">Phone Number</Label>
+              <div className="space-y-4 sm:space-y-6 border-t pt-6 sm:pt-8">
+                <h3 className="text-base sm:text-lg font-medium">Contact Information</h3>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                  <div className="space-y-2 sm:space-y-3">
+                    <Label htmlFor="phone" className="text-sm sm:text-base">Phone Number</Label>
                     <div className="relative">
-                      <Phone className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                      <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                       <Input
                         id="phone"
                         placeholder="Your phone number"
-                        className="pl-10"
+                        className="pl-10 h-10 sm:h-11"
                         {...form.register('contactInfo.phone')}
                       />
                     </div>
                   </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="email">Email Address</Label>
+
+                  <div className="space-y-2 sm:space-y-3">
+                    <Label htmlFor="email" className="text-sm sm:text-base">Email Address</Label>
                     <div className="relative">
-                      <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                      <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                       <Input
                         id="email"
                         type="email"
                         placeholder="Your email address"
-                        className="pl-10"
+                        className="pl-10 h-10 sm:h-11"
                         {...form.register('contactInfo.email')}
                       />
                     </div>
                   </div>
                 </div>
 
-                <div className="space-y-3">
-                  <Label>Preferred Contact Method</Label>
+                <div className="space-y-3 sm:space-y-4">
+                  <Label className="text-sm sm:text-base">Preferred Contact Method</Label>
                   <RadioGroup
                     value={form.watch('contactInfo.preferredContact')}
                     onValueChange={(value) => form.setValue('contactInfo.preferredContact', value)}
-                    className="flex gap-6"
+                    className="flex flex-col sm:flex-row gap-4 sm:gap-6"
                   >
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="phone" id="contact-phone" />
-                      <Label htmlFor="contact-phone">Phone</Label>
+                    <div className="flex items-center space-x-2 sm:space-x-3">
+                      <RadioGroupItem value="phone" id="contact-phone" className="flex-shrink-0" />
+                      <Label htmlFor="contact-phone" className="text-sm sm:text-base">Phone</Label>
                     </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="email" id="contact-email" />
-                      <Label htmlFor="contact-email">Email</Label>
+                    <div className="flex items-center space-x-2 sm:space-x-3">
+                      <RadioGroupItem value="email" id="contact-email" className="flex-shrink-0" />
+                      <Label htmlFor="contact-email" className="text-sm sm:text-base">Email</Label>
                     </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="both" id="contact-both" />
-                      <Label htmlFor="contact-both">Both</Label>
+                    <div className="flex items-center space-x-2 sm:space-x-3">
+                      <RadioGroupItem value="both" id="contact-both" className="flex-shrink-0" />
+                      <Label htmlFor="contact-both" className="text-sm sm:text-base">Both</Label>
                     </div>
                   </RadioGroup>
                 </div>
               </div>
 
               {/* Submit Button */}
-              <div className="flex justify-end gap-4 pt-6 border-t">
+              <div className="flex flex-col sm:flex-row justify-end gap-3 sm:gap-4 pt-6 sm:pt-8 border-t">
                 <Link href="/dashboard/requests">
-                  <Button type="button" variant="outline">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    className="w-full sm:w-auto order-2 sm:order-1"
+                  >
                     Cancel
                   </Button>
                 </Link>
                 <Button
                   type="submit"
+                  size="sm"
                   disabled={isLoading}
-                  className="bg-primary hover:bg-primary/90 text-primary-foreground"
+                  className="bg-primary hover:bg-primary/90 text-primary-foreground w-full sm:w-auto order-1 sm:order-2"
                 >
                   {isLoading ? (
                     <>
                       <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                      Creating Request...
+                      <span className="hidden xs:inline">Creating Request...</span>
+                      <span className="xs:hidden">Creating...</span>
                     </>
                   ) : (
                     <>
                       <Heart className="h-4 w-4 mr-2" />
-                      Create Request
+                      <span className="hidden xs:inline">Create Request</span>
+                      <span className="xs:hidden">Create</span>
                     </>
                   )}
                 </Button>

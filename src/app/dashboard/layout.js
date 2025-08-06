@@ -57,9 +57,9 @@ export default function DashboardLayout({ children }) {
   const isMainDashboard = pathname === "/dashboard";
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="bg-gray-50">
       {/* Persistent Header */}
-      <header className="bg-white border-b sticky top-0 z-50">
+      <header className="bg-white border-b fixed top-0 left-0 right-0 z-50">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo and Navigation */}
@@ -220,7 +220,7 @@ export default function DashboardLayout({ children }) {
       </header>
 
       {/* Main Content */}
-      <main>
+      <main className="pt-24">
         {children}
       </main>
     </div>

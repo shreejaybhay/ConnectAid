@@ -240,61 +240,71 @@ const RequestDetailPage = ({ params }) => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-
       {/* Main Content */}
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <main className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
           {/* Main Content */}
-          <div className="lg:col-span-2 space-y-6">
+          <div className="lg:col-span-2 space-y-4 sm:space-y-6">
             {/* Request Header */}
-            <Card>
-              <CardHeader>
-                <div className="flex items-start justify-between">
-                  <div className="flex items-center gap-3 min-w-0 flex-1">
-                    <span className="text-3xl flex-shrink-0">{getTypeIcon(request.type)}</span>
+            <Card className="hover:shadow-sm transition-shadow duration-200">
+              <CardHeader className="pb-4 sm:pb-6">
+                <div className="flex flex-col sm:flex-row sm:items-start gap-4 sm:gap-6">
+                  <div className="flex items-start gap-3 sm:gap-4 min-w-0 flex-1">
+                    <span className="text-2xl sm:text-3xl flex-shrink-0">{getTypeIcon(request.type)}</span>
                     <div className="min-w-0 flex-1">
-                      <CardTitle className="text-xl truncate">{request.title}</CardTitle>
-                      <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-sm text-gray-600 mt-2">
-                        <span className="flex items-center gap-1 min-w-0 flex-1">
+                      <CardTitle className="text-lg sm:text-xl lg:text-2xl leading-tight mb-2 sm:mb-3">
+                        {request.title}
+                      </CardTitle>
+                      <div className="flex flex-col gap-2 text-sm sm:text-base text-gray-600">
+                        <span className="flex items-center gap-2 min-w-0">
                           <MapPin className="h-4 w-4 flex-shrink-0" />
                           <span className="truncate">{request.location}</span>
                         </span>
-                        <span className="flex items-center gap-1 flex-shrink-0">
+                        <span className="flex items-center gap-2">
                           <Calendar className="h-4 w-4 flex-shrink-0" />
-                          <span className="whitespace-nowrap">{new Date(request.createdAt).toLocaleDateString()}</span>
+                          <span>{new Date(request.createdAt).toLocaleDateString()}</span>
                         </span>
                       </div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-wrap items-center gap-2 sm:gap-3 flex-shrink-0">
                     {getStatusBadge(request.status)}
-                    <Badge className={`px-2 py-1 text-xs ${getPriorityColor(request.priority)}`}>
+                    <Badge className={`px-2 py-1 text-xs whitespace-nowrap ${getPriorityColor(request.priority)}`}>
                       <Flag className="h-3 w-3 mr-1" />
                       {request.priority} priority
                     </Badge>
                   </div>
                 </div>
               </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
+              <CardContent className="pt-0">
+                <div className="space-y-4 sm:space-y-6">
                   <div>
-                    <h3 className="font-medium text-gray-900 mb-2">Description</h3>
-                    <p className="text-gray-700 whitespace-pre-wrap leading-relaxed">{request.description}</p>
+                    <h3 className="font-medium text-gray-900 mb-2 sm:mb-3 text-sm sm:text-base">Description</h3>
+                    <p className="text-gray-700 whitespace-pre-wrap leading-relaxed text-sm sm:text-base">
+                      {request.description}
+                    </p>
                   </div>
 
                   {/* Images */}
                   {request.images && request.images.length > 0 && (
                     <div>
-                      <h3 className="font-medium text-gray-900 mb-2">Images</h3>
-                      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                      <h3 className="font-medium text-gray-900 mb-3 sm:mb-4 text-sm sm:text-base">
+                        Images ({request.images.length})
+                      </h3>
+                      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
                         {request.images.map((image, index) => (
-                          <img
+                          <div
                             key={index}
-                            src={image.url}
-                            alt={`Request image ${index + 1}`}
-                            className="w-full h-32 object-cover rounded-lg border cursor-pointer hover:opacity-90 transition-opacity"
+                            className="relative group cursor-pointer"
                             onClick={() => setSelectedImage(image.url)}
-                          />
+                          >
+                            <img
+                              src={image.url}
+                              alt={`Request image ${index + 1}`}
+                              className="w-full h-24 sm:h-32 object-cover rounded-lg border hover:shadow-md transition-all duration-200 group-hover:scale-105"
+                            />
+                            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 rounded-lg transition-colors duration-200" />
+                          </div>
                         ))}
                       </div>
                     </div>
@@ -302,13 +312,14 @@ const RequestDetailPage = ({ params }) => {
 
                   {/* Actions */}
                   {(canEdit || canAccept) && (
-                    <div className="flex gap-2 pt-4 border-t">
+                    <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 pt-4 sm:pt-6 border-t">
                       {canEdit && (
                         <>
                           <Link href={`/dashboard/requests/${request._id}/edit`}>
-                            <Button variant="outline" size="sm">
+                            <Button variant="outline" size="sm" className="w-full sm:w-auto">
                               <Edit className="h-4 w-4 mr-2" />
-                              Edit Request
+                              <span className="hidden xs:inline">Edit Request</span>
+                              <span className="xs:hidden">Edit</span>
                             </Button>
                           </Link>
                           {canDelete && (
@@ -316,10 +327,11 @@ const RequestDetailPage = ({ params }) => {
                               variant="outline"
                               size="sm"
                               onClick={handleDeleteRequest}
-                              className="text-red-600 hover:text-red-700"
+                              className="text-red-600 hover:text-red-700 w-full sm:w-auto"
                             >
                               <Trash2 className="h-4 w-4 mr-2" />
-                              Delete Request
+                              <span className="hidden xs:inline">Delete Request</span>
+                              <span className="xs:hidden">Delete</span>
                             </Button>
                           )}
                         </>
@@ -328,10 +340,11 @@ const RequestDetailPage = ({ params }) => {
                         <Button
                           size="sm"
                           onClick={handleAcceptRequest}
-                          className="bg-green-600 hover:bg-green-700 text-white"
+                          className="bg-green-600 hover:bg-green-700 text-white w-full sm:w-auto"
                         >
                           <CheckCircle className="h-4 w-4 mr-2" />
-                          Accept Request
+                          <span className="hidden xs:inline">Accept Request</span>
+                          <span className="xs:hidden">Accept</span>
                         </Button>
                       )}
                     </div>
@@ -342,21 +355,21 @@ const RequestDetailPage = ({ params }) => {
 
             {/* Feedback Section */}
             {request.status === 'completed' && feedback && (
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Star className="h-5 w-5 text-yellow-500" />
-                    Feedback
+              <Card className="hover:shadow-sm transition-shadow duration-200">
+                <CardHeader className="pb-4 sm:pb-6">
+                  <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+                    <Star className="h-4 w-4 sm:h-5 sm:w-5 text-yellow-500 flex-shrink-0" />
+                    <span>Feedback</span>
                   </CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    <div className="flex items-center gap-2">
+                <CardContent className="pt-0">
+                  <div className="space-y-3 sm:space-y-4">
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
                       <div className="flex">
                         {[1, 2, 3, 4, 5].map((star) => (
                           <Star
                             key={star}
-                            className={`h-4 w-4 ${
+                            className={`h-4 w-4 sm:h-5 sm:w-5 ${
                               star <= feedback.rating
                                 ? 'text-yellow-500 fill-current'
                                 : 'text-gray-300'
@@ -364,14 +377,16 @@ const RequestDetailPage = ({ params }) => {
                           />
                         ))}
                       </div>
-                      <span className="text-sm text-gray-600">
+                      <span className="text-sm sm:text-base text-gray-600">
                         {feedback.rating}/5 stars
                       </span>
                     </div>
                     {feedback.comment && (
-                      <p className="text-gray-700">{feedback.comment}</p>
+                      <p className="text-gray-700 text-sm sm:text-base leading-relaxed">
+                        {feedback.comment}
+                      </p>
                     )}
-                    <p className="text-sm text-gray-500">
+                    <p className="text-xs sm:text-sm text-gray-500">
                       From {feedback.fromUser.firstName} {feedback.fromUser.lastName}
                     </p>
                   </div>
@@ -393,38 +408,38 @@ const RequestDetailPage = ({ params }) => {
           </div>
 
           {/* Sidebar */}
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             {/* Request Info */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Request Details</CardTitle>
+            <Card className="hover:shadow-sm transition-shadow duration-200">
+              <CardHeader className="pb-4 sm:pb-6">
+                <CardTitle className="text-base sm:text-lg">Request Details</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className="space-y-3 sm:space-y-4 pt-0">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-500">Status</span>
+                  <span className="text-xs sm:text-sm text-gray-500">Status</span>
                   {getStatusBadge(request.status)}
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-500">Type</span>
+                  <span className="text-xs sm:text-sm text-gray-500">Type</span>
                   <div className="flex items-center gap-2">
-                    <span>{getTypeIcon(request.type)}</span>
-                    <span className="capitalize">{request.type}</span>
+                    <span className="text-sm sm:text-base">{getTypeIcon(request.type)}</span>
+                    <span className="capitalize text-sm sm:text-base">{request.type}</span>
                   </div>
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-500">Priority</span>
-                  <Badge className={`px-2 py-1 text-xs ${getPriorityColor(request.priority)}`}>
+                  <span className="text-xs sm:text-sm text-gray-500">Priority</span>
+                  <Badge className={`px-2 py-1 text-xs whitespace-nowrap ${getPriorityColor(request.priority)}`}>
                     <Flag className="h-3 w-3 mr-1" />
                     {request.priority}
                   </Badge>
                 </div>
 
-                <div className="flex items-center justify-between pt-2 border-t">
-                  <span className="text-sm text-gray-500">Created</span>
+                <div className="flex items-center justify-between pt-2 sm:pt-3 border-t">
+                  <span className="text-xs sm:text-sm text-gray-500">Created</span>
                   <div className="text-right">
-                    <div className="text-sm">
+                    <div className="text-xs sm:text-sm">
                       {new Date(request.createdAt).toLocaleDateString('en-US', {
                         month: 'short',
                         day: 'numeric',
@@ -442,8 +457,8 @@ const RequestDetailPage = ({ params }) => {
 
                 {request.acceptedAt && (
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-500">Accepted</span>
-                    <span className="text-sm">
+                    <span className="text-xs sm:text-sm text-gray-500">Accepted</span>
+                    <span className="text-xs sm:text-sm text-right">
                       {new Date(request.acceptedAt).toLocaleDateString('en-US', {
                         month: 'short',
                         day: 'numeric',
@@ -455,8 +470,8 @@ const RequestDetailPage = ({ params }) => {
 
                 {request.completedAt && (
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-500">Completed</span>
-                    <span className="text-sm">
+                    <span className="text-xs sm:text-sm text-gray-500">Completed</span>
+                    <span className="text-xs sm:text-sm text-right">
                       {new Date(request.completedAt).toLocaleDateString('en-US', {
                         month: 'short',
                         day: 'numeric',
@@ -470,63 +485,61 @@ const RequestDetailPage = ({ params }) => {
 
             {/* Volunteer Info */}
             {request.assignedTo && (
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <User className="h-5 w-5" />
-                    Assigned Volunteer
+              <Card className="hover:shadow-sm transition-shadow duration-200">
+                <CardHeader className="pb-4 sm:pb-6">
+                  <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+                    <User className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
+                    <span>Assigned Volunteer</span>
                   </CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    <div>
-                      <p className="font-medium">
-                        {request.assignedTo.firstName} {request.assignedTo.lastName}
-                      </p>
-                    </div>
-                    
-                    {request.assignedTo.email && (
-                      <div className="flex items-center gap-2 text-sm text-gray-600">
-                        <Mail className="h-4 w-4" />
-                        <a 
-                          href={`mailto:${request.assignedTo.email}`}
-                          className="hover:text-primary"
-                        >
-                          {request.assignedTo.email}
-                        </a>
-                      </div>
-                    )}
-                    
-                    {request.assignedTo.phone && (
-                      <div className="flex items-center gap-2 text-sm text-gray-600">
-                        <Phone className="h-4 w-4" />
-                        <a 
-                          href={`tel:${request.assignedTo.phone}`}
-                          className="hover:text-primary"
-                        >
-                          {request.assignedTo.phone}
-                        </a>
-                      </div>
-                    )}
+                <CardContent className="space-y-3 sm:space-y-4 pt-0">
+                  <div>
+                    <p className="font-medium text-sm sm:text-base">
+                      {request.assignedTo.firstName} {request.assignedTo.lastName}
+                    </p>
                   </div>
+
+                  {request.assignedTo.email && (
+                    <div className="flex items-center gap-2 sm:gap-3 text-xs sm:text-sm text-gray-600">
+                      <Mail className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+                      <a
+                        href={`mailto:${request.assignedTo.email}`}
+                        className="hover:text-primary transition-colors duration-200 truncate"
+                      >
+                        {request.assignedTo.email}
+                      </a>
+                    </div>
+                  )}
+
+                  {request.assignedTo.phone && (
+                    <div className="flex items-center gap-2 sm:gap-3 text-xs sm:text-sm text-gray-600">
+                      <Phone className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+                      <a
+                        href={`tel:${request.assignedTo.phone}`}
+                        className="hover:text-primary transition-colors duration-200"
+                      >
+                        {request.assignedTo.phone}
+                      </a>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             )}
 
             {/* Contact Info */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Contact Information</CardTitle>
+            <Card className="hover:shadow-sm transition-shadow duration-200">
+              <CardHeader className="pb-4 sm:pb-6">
+                <CardTitle className="text-base sm:text-lg">Contact Information</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className="space-y-3 sm:space-y-4 pt-0">
                 {request.contactInfo?.phone && (
-                  <div className="flex items-center gap-3">
-                    <Phone className="h-4 w-4 text-gray-400" />
-                    <div>
-                      <p className="text-xs text-gray-500">Phone</p>
+                  <div className="flex items-start gap-3 sm:gap-4">
+                    <Phone className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400 flex-shrink-0 mt-0.5" />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs sm:text-sm text-gray-500 mb-1">Phone</p>
                       <a
                         href={`tel:${request.contactInfo.phone}`}
-                        className="text-sm hover:text-blue-600"
+                        className="text-sm sm:text-base hover:text-blue-600 transition-colors duration-200 block"
                       >
                         {request.contactInfo.phone}
                       </a>
@@ -535,13 +548,13 @@ const RequestDetailPage = ({ params }) => {
                 )}
 
                 {request.contactInfo?.email && (
-                  <div className="flex items-center gap-3">
-                    <Mail className="h-4 w-4 text-gray-400" />
-                    <div>
-                      <p className="text-xs text-gray-500">Email</p>
+                  <div className="flex items-start gap-3 sm:gap-4">
+                    <Mail className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400 flex-shrink-0 mt-0.5" />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs sm:text-sm text-gray-500 mb-1">Email</p>
                       <a
                         href={`mailto:${request.contactInfo.email}`}
-                        className="text-sm hover:text-blue-600"
+                        className="text-sm sm:text-base hover:text-blue-600 transition-colors duration-200 block truncate"
                       >
                         {request.contactInfo.email}
                       </a>
@@ -549,12 +562,14 @@ const RequestDetailPage = ({ params }) => {
                   </div>
                 )}
 
-                <div className="flex items-center justify-between pt-2 border-t">
-                  <span className="text-xs text-gray-500">Preferred</span>
-                  <span className="text-sm capitalize">
-                    {request.contactInfo?.preferredContact || 'email'}
-                  </span>
-                </div>
+                {request.contactInfo?.preferredContact && (
+                  <div className="flex items-center justify-between pt-2 sm:pt-3 border-t">
+                    <span className="text-xs sm:text-sm text-gray-500">Preferred</span>
+                    <span className="text-xs sm:text-sm capitalize">
+                      {request.contactInfo.preferredContact}
+                    </span>
+                  </div>
+                )}
               </CardContent>
             </Card>
           </div>
@@ -572,7 +587,7 @@ const RequestDetailPage = ({ params }) => {
               duration: 0.15,
               ease: [0.4, 0.0, 0.2, 1]
             }}
-            className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4"
+            className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-3 sm:p-4"
             onClick={() => setSelectedImage(null)}
           >
             <motion.div
@@ -583,12 +598,12 @@ const RequestDetailPage = ({ params }) => {
                 duration: 0.15,
                 ease: [0.4, 0.0, 0.2, 1]
               }}
-              className="relative max-w-4xl max-h-full"
+              className="relative max-w-full sm:max-w-4xl max-h-full w-full"
             >
               <img
                 src={selectedImage}
                 alt="Full size image"
-                className="max-w-full max-h-full object-contain rounded-lg"
+                className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
                 onClick={(e) => e.stopPropagation()}
               />
               <motion.button
@@ -599,9 +614,9 @@ const RequestDetailPage = ({ params }) => {
                   ease: "easeOut"
                 }}
                 onClick={() => setSelectedImage(null)}
-                className="absolute top-4 right-4 text-white bg-black/40 rounded-full p-2 hover:bg-black/60 transition-colors duration-150"
+                className="absolute top-2 right-2 sm:top-4 sm:right-4 text-white bg-black/50 rounded-full p-2 sm:p-3 hover:bg-black/70 transition-colors duration-150"
               >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </motion.button>

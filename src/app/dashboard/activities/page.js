@@ -134,57 +134,61 @@ export default function CitizenActivitiesPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading your activities...</p>
+      <div className="bg-gray-50 content-fit no-overscroll flex items-center justify-center min-h-[50vh]">
+        <div className="text-center px-4">
+          <div className="animate-spin rounded-full h-6 w-6 sm:h-8 sm:w-8 border-b-2 border-primary mx-auto mb-3 sm:mb-4"></div>
+          <p className="text-gray-600 text-sm sm:text-base">Loading your activities...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="bg-gray-50 content-fit no-overscroll">
+      <div className="max-w-6xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
         {/* Page Header */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3 mb-2">
-              <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-                <Activity className="h-5 w-5 text-primary" />
+        <div className="mb-6 sm:mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="flex items-center space-x-3">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
+                <Activity className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
               </div>
-              <div>
-                <h1 className="text-2xl font-bold text-gray-900">My Activities</h1>
-                <p className="text-gray-600">Track your community involvement and requests</p>
+              <div className="min-w-0 flex-1">
+                <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">My Activities</h1>
+                <p className="text-sm sm:text-base text-gray-600 mt-1">Track your community involvement and requests</p>
               </div>
             </div>
-            <Link href="/dashboard/requests/create">
-              <Button className="flex items-center gap-2">
-                <Plus className="h-4 w-4" />
-                New Request
-              </Button>
-            </Link>
+            <div className="flex-shrink-0">
+              <Link href="/dashboard/requests/create">
+                <Button className="flex items-center gap-2 w-full sm:w-auto" size="sm">
+                  <Plus className="h-4 w-4" />
+                  <span className="hidden xs:inline">New Request</span>
+                  <span className="xs:hidden">New</span>
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
 
         {/* Search and Filters */}
-        <Card className="mb-6">
-          <CardContent className="p-6">
-            <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
-              <div className="relative flex-1 max-w-md">
+        <Card className="mb-4 sm:mb-6 hover:shadow-sm transition-shadow duration-200">
+          <CardContent className="p-4 sm:p-6">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+              <div className="relative flex-1">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
                 <Input
                   placeholder="Search your requests..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10"
+                  className="pl-10 h-10 sm:h-11"
                 />
               </div>
-              <div className="flex items-center space-x-2">
-                <Filter className="h-4 w-4 text-gray-500" />
+              <div className="flex items-center space-x-2 sm:space-x-3 flex-shrink-0">
+                <Filter className="h-4 w-4 text-gray-500 flex-shrink-0" />
                 <select
                   value={filterStatus}
                   onChange={(e) => setFilterStatus(e.target.value)}
-                  className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                  className="flex-1 sm:flex-none px-3 py-2 sm:py-2.5 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent min-w-0"
                 >
                   <option value="all">All Status</option>
                   <option value="open">Open</option>
@@ -199,22 +203,24 @@ export default function CitizenActivitiesPage() {
 
         {/* Requests List */}
         {filteredRequests.length > 0 ? (
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             {filteredRequests.map((request) => (
-              <Card key={request._id} className="hover:shadow-sm transition-shadow">
-                <CardContent className="p-6">
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-start space-x-4 flex-1">
-                      <div className="text-2xl">{getTypeIcon(request.type)}</div>
+              <Card key={request._id} className="hover:shadow-md transition-shadow duration-200">
+                <CardContent className="p-4 sm:p-6">
+                  <div className="flex flex-col sm:flex-row sm:items-start gap-4">
+                    {/* Mobile Layout - Stacked */}
+                    <div className="flex items-start space-x-3 sm:space-x-4 flex-1 min-w-0">
+                      <div className="text-xl sm:text-2xl flex-shrink-0">{getTypeIcon(request.type)}</div>
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-start justify-between mb-2">
-                          <h3 className="text-lg font-medium text-gray-900 truncate pr-4">
+                        {/* Title and Badges */}
+                        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 sm:gap-4 mb-3">
+                          <h3 className="text-base sm:text-lg font-medium text-gray-900 line-clamp-2 sm:line-clamp-1 flex-1 min-w-0">
                             {request.title}
                           </h3>
-                          <div className="flex items-center space-x-2 flex-shrink-0">
+                          <div className="flex flex-wrap items-center gap-2 flex-shrink-0">
                             <Badge className={`text-xs px-2 py-1 ${getPriorityColor(request.priority)}`}>
                               <Flag className="h-3 w-3 mr-1" />
-                              {request.priority}
+                              <span className="capitalize">{request.priority}</span>
                             </Badge>
                             <Badge className={`text-xs px-2 py-1 ${getStatusColor(request.status)}`}>
                               {getStatusIcon(request.status)}
@@ -222,33 +228,40 @@ export default function CitizenActivitiesPage() {
                             </Badge>
                           </div>
                         </div>
-                        
-                        <p className="text-gray-600 text-sm mb-3 line-clamp-2">
+
+                        {/* Description */}
+                        <p className="text-gray-600 text-sm sm:text-base mb-3 line-clamp-2">
                           {request.description}
                         </p>
-                        
-                        <div className="flex items-center space-x-4 text-sm text-gray-500">
-                          <div className="flex items-center">
-                            <MapPin className="h-4 w-4 mr-1" />
-                            {request.location}
+
+                        {/* Meta Information */}
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-xs sm:text-sm text-gray-500">
+                          <div className="flex items-center min-w-0">
+                            <MapPin className="h-3 w-3 sm:h-4 sm:w-4 mr-1 flex-shrink-0" />
+                            <span className="truncate">{request.location}</span>
                           </div>
-                          <div className="flex items-center">
-                            <Calendar className="h-4 w-4 mr-1" />
-                            {new Date(request.createdAt).toLocaleDateString()}
+                          <div className="flex items-center flex-shrink-0">
+                            <Calendar className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
+                            <span>{new Date(request.createdAt).toLocaleDateString()}</span>
                           </div>
                           {request.assignedTo && (
-                            <div className="flex items-center">
-                              <Users className="h-4 w-4 mr-1" />
-                              {request.assignedTo.firstName} {request.assignedTo.lastName}
+                            <div className="flex items-center min-w-0">
+                              <Users className="h-3 w-3 sm:h-4 sm:w-4 mr-1 flex-shrink-0" />
+                              <span className="truncate">
+                                {request.assignedTo.firstName} {request.assignedTo.lastName}
+                              </span>
                             </div>
                           )}
                         </div>
                       </div>
                     </div>
-                    <div className="ml-4">
+
+                    {/* Action Button */}
+                    <div className="flex sm:flex-col justify-end sm:justify-start flex-shrink-0">
                       <Link href={`/dashboard/requests/${request._id}`}>
-                        <Button variant="outline" size="sm">
-                          View Details
+                        <Button variant="outline" size="sm" className="w-full sm:w-auto">
+                          <span className="hidden xs:inline">View Details</span>
+                          <span className="xs:hidden">View</span>
                         </Button>
                       </Link>
                     </div>
@@ -258,26 +271,28 @@ export default function CitizenActivitiesPage() {
             ))}
           </div>
         ) : (
-          <Card>
-            <CardContent className="p-12 text-center">
-              <Activity className="h-12 w-12 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 mb-2">No activities found</h3>
-              <p className="text-gray-500 mb-6">
-                {searchTerm || filterStatus !== "all" 
-                  ? "No requests match your current filters." 
-                  : "You haven't created any requests yet."}
+          <Card className="hover:shadow-sm transition-shadow duration-200">
+            <CardContent className="p-8 sm:p-12 text-center">
+              <Activity className="h-10 w-10 sm:h-12 sm:w-12 text-gray-300 mx-auto mb-3 sm:mb-4" />
+              <h3 className="text-base sm:text-lg font-medium text-gray-900 mb-2">No activities found</h3>
+              <p className="text-sm sm:text-base text-gray-500 mb-4 sm:mb-6 max-w-md mx-auto">
+                {searchTerm || filterStatus !== "all"
+                  ? "No requests match your current filters. Try adjusting your search or filter criteria."
+                  : "You haven't created any requests yet. Start by creating your first request to get help from your community."}
               </p>
               {!searchTerm && filterStatus === "all" && (
                 <Link href="/dashboard/requests/create">
-                  <Button>
+                  <Button size="sm" className="w-full sm:w-auto">
                     <Plus className="h-4 w-4 mr-2" />
-                    Create Your First Request
+                    <span className="hidden xs:inline">Create Your First Request</span>
+                    <span className="xs:hidden">Create Request</span>
                   </Button>
                 </Link>
               )}
             </CardContent>
           </Card>
         )}
+      </div>
     </div>
   );
 }
